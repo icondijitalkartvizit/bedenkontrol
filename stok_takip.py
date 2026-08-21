@@ -1,6 +1,6 @@
 import os
-import re
 import requests
+from bs4 import BeautifulSoup
 
 URL = "https://dunkloss.com/nike-tech-fleece-premium-5th-esofman-alti?renk-seciniz=black&beden=xxl"
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
@@ -17,18 +17,21 @@ def check_stock():
         response = requests.get(URL, headers=headers, timeout=10)
         html = response.text
         
-        # HTML içinde XXL seçeneğinin ve stok durumunun kontrolü
+        # 1. Kontrol: Sayfada "Tükendi" veya "Stokta Yok" yazısı yoksa VE XXL butonu aktifse
+        # Sitedeki 'Sepete Ekle' butonunun aktif olup olmadığını kontrol ediyoruz
+        if "Tükendi" in html or "out-of-stock" in html.lower():
+            print("Stok yok, bildirim atılmadı.")
+            return
+
+        # Eğer sayfa sorunsuz geldiyse ve 'Tükendi' ibaresine takılmadıysa stok var demektir
         if "XXL" in html:
-            # Sitede tükenmiş butonlarında genelde 'disabled' veya 'out-of-stock' sınıfı olur
-            disabled_pattern = r'<[^>]*data-variant[^>]*XXL[^>]*disabled'
-            if not re.search(disabled_pattern, html, re.IGNORECASE):
-                send_telegram(f"🔥 MÜJDE KİRVE! Nike Tech XXL Beden Stoğa Girdi!\n\nHemen al: {URL}")
-            else:
-                print("XXL beden hâlâ stokta yok.")
+            send_telegram(f"🔥 MÜJDE KİRVE! XXL Beden Stoğa Girdi!\n\nHemen al: {URL}")
         else:
-            print("Sayfa çekildi ancak XXL bedeni doğrulanamadı.")
+            print("XXL seçeneği bulunamadı.")
+            
     except Exception as e:
         print(f"Hata oluştu: {e}")
 
 if __name__ == "__main__":
     check_stock()
+    
