@@ -25,7 +25,7 @@ def check_stock():
 
         # Eğer sayfa sorunsuz geldiyse ve 'Tükendi' ibaresine takılmadıysa stok var demektir
         if "XXL" in html:
-            send_telegram(f"🔥 MÜJDE KİRVE! XXL Beden Stoğa Girdi!\n\nHemen al: {URL}")
+            send_telegram(f"🔥 MÜJDE KİRVE! SİYAH TECH EŞOFMAN XXL Beden Stoğa Girdi!\n\nHemen al: {URL}")
         else:
             print("XXL seçeneği bulunamadı.")
             
