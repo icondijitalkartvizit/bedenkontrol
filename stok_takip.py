@@ -16,15 +16,13 @@ def check_stock():
         response = requests.get(URL, headers=headers, timeout=10)
         html = response.text
         
-        # Tükendi kontrolü
+        # Sayfada Tükendi yazısı varsa dur, yoksa müjdeyi ver
         if "Tükendi" in html or "out-of-stock" in html.lower():
             print("Siyah XXL beden hâlâ stokta yok.")
             return
 
         if "XXL" in html:
-            
             send_telegram(f"🔥 MÜJDE KİRVE! Siyah Nike Tech XXL Beden Stoğa Girdi!\n\nHemen al: {URL}")
-            send_telegram("Test mesajı kirve, sistem çalışıyor!")
         else:
             print("XXL seçeneği bulunamadı.")
             
