@@ -22,7 +22,9 @@ def check_stock():
             return
 
         if "XXL" in html:
+            
             send_telegram(f"🔥 MÜJDE KİRVE! Siyah Nike Tech XXL Beden Stoğa Girdi!\n\nHemen al: {URL}")
+            send_telegram("Test mesajı kirve, sistem çalışıyor!")
         else:
             print("XXL seçeneği bulunamadı.")
             
