@@ -1,6 +1,5 @@
 import os
 import requests
-from bs4 import BeautifulSoup
 
 URL = "https://dunkloss.com/nike-tech-fleece-premium-5th-esofman-alti?renk-seciniz=black&beden=xxl"
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
@@ -17,15 +16,13 @@ def check_stock():
         response = requests.get(URL, headers=headers, timeout=10)
         html = response.text
         
-        # 1. Kontrol: Sayfada "Tükendi" veya "Stokta Yok" yazısı yoksa VE XXL butonu aktifse
-        # Sitedeki 'Sepete Ekle' butonunun aktif olup olmadığını kontrol ediyoruz
+        # Tükendi kontrolü
         if "Tükendi" in html or "out-of-stock" in html.lower():
-            print("Stok yok, bildirim atılmadı.")
+            print("Siyah XXL beden hâlâ stokta yok.")
             return
 
-        # Eğer sayfa sorunsuz geldiyse ve 'Tükendi' ibaresine takılmadıysa stok var demektir
         if "XXL" in html:
-            send_telegram(f"🔥 MÜJDE KİRVE! SİYAH TECH EŞOFMAN XXL Beden Stoğa Girdi!\n\nHemen al: {URL}")
+            send_telegram(f"🔥 MÜJDE KİRVE! Siyah Nike Tech XXL Beden Stoğa Girdi!\n\nHemen al: {URL}")
         else:
             print("XXL seçeneği bulunamadı.")
             
